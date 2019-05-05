@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <table id="dg" class="easyui-datagrid" data-options="toolbar:'#tb',fitColumns:true,singleSelect:true">
+
+    </table>
+
+    <div id="tb">
+        <a href="javascript:addAttrInfo();" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" >添加</a>
+        <a href="javascript:editAttrInfo();" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" >编辑</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" >删除</a>
+        <br>
+
+        一级分类:&nbsp;<select id="catalog1" name="catalog1Id" class="easyui-combobox"  style="width:100px;"></select>&nbsp;&nbsp;
+        二级分类:&nbsp;<select id="catalog2" name="catalog2Id" class="easyui-combobox"  style="width:100px;"></select>&nbsp;&nbsp;
+        三级分类:&nbsp;<select id="catalog3" name="catalog3Id" class="easyui-combobox"  style="width:100px;"></select>
+        <a href="javascript:getAttrList();" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:120px">刷新属性列表</a>
+    </div>
+
+    <div th:include="attrInfoPage"></div>
+
+
+</body>
+
+   <script>
+       $("#catalog1").combobox({
+           valueField: 'id',
+           textField: 'name',
+           url: 'getCatalog1',
+           onSelect: function(param){
+               $("#catalog2").combobox("clear");
+               $("#catalog3").combobox("clear");
+               $("#catalog2").combobox({
+                   valueField: 'id',
+                   textField: 'name',
+                   url: 'getCatalog2?catalog1Id='+param.id,
+                   onSelect: function(param){
+                       $("#catalog3").combobox("clear");
+                       $("#catalog3").combobox({
+                           valueField: 'id',
+                           textField: 'name',
+                           url: 'getCatalog3?catalog2Id='+param.id,
+                           /*onSelect: function(param){
+                               getAttrList(param.id);
+                           }*/
+                       });
+                   }
+               });
+
+           }
+       });
+
+       function getAttrList(){
+           catalog3Id=$("#catalog3").combobox("getValue")
+           $('#dg').datagrid({
+               url:'getAttrListByCal3?catalog3Id='+catalog3Id,
+               columns:[[
+                   {field:'id',title:'属性id',width:100},
+                   {field:'attrName',title:'属性名称',width:100}
+               ]]
+           });
+       }
+
+     function addAttrInfo() {
+         catalog3Id=$("#catalog3").combobox("getValue")
+         if(catalog3Id){
+             $("#dlg").dialog("open");
+
+             //初始化属性添加表格
+             initAttrValueDatagrid();
+         }else{
+             alert("请选择三级分类")
+         }
+
+     }
+
+
+
+
+
+   </script>
+</html>

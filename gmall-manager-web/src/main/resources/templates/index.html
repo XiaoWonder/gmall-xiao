@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<script src="easyui/jquery.min.js"></script>
+<script src="easyui/jquery.easyui.min.js"></script>
+<body class="easyui-layout">
+<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px">
+    后台商品管理</div>
+<div data-options="region:'west',split:true,title:'West'" style="width:200px;padding:10px;">
+
+    <div class="easyui-accordion" style="width:180px;">
+        <div title="基本信息管理" data-options="iconCls:'icon-ok'" style="overflow:auto;padding:10px;">
+            <ul >
+                <li>
+                    <a href="javascript:add_tab('attrListPage','属性信息管理')">属性信息管理</a>
+                </li>
+            </ul>
+        </div>
+        <div title="商品信息管理" data-options="iconCls:'icon-help'" style="padding:10px;">
+            <ul >
+                <li>
+                    <a href="javascript:add_tab('spuListPage','spu信息管理')">spu信息管理</a>
+                </li>
+            </ul>
+        </div>
+        <div title="广告管理" data-options="iconCls:'icon-search'" style="padding:10px;">
+            <ul >
+                <li>
+                    其他信息管理
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div data-options="region:'east',split:true,collapsed:true,title:'East'" style="width:100px;padding:10px;">east region</div>
+<div data-options="region:'south',border:false" style="height:50px;background:#A9FACD;padding:10px;">south region</div>
+<div data-options="region:'center' "  border="false">
+    <div class="easyui-tabs" id="tt"></div>
+
+</div>
+</body>
+<script>
+    function add_tab(url,title) {
+        if($('#tt').tabs("exists",title)){
+            $('#tt').tabs("select",title);
+        }else{
+            $('#tt').tabs('add',{
+                title:title,
+                href:url,
+                closable:true,
+                tools:[{
+                    iconCls:'icon-mini-refresh',
+                    handler:function(){
+                        alert('refresh');
+                    }
+                }]
+            });
+        }
+
+    }
+
+
+</script>
+</html>
